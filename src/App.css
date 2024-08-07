@@ -125,3 +125,11 @@ nav h1 {
 #disabled {
   background-color: #3a393c;
 }
+
+#green {
+  background: green;
+}
+
+#red {
+  background: red;
+}

@@ -7,7 +7,9 @@ import GameOver from "./components/GameOver";
 
 export const AppContext = createContext();
 function App() {
-  const [board, setBoard] = useState(boardDefault);
+  const [board, setBoard] = useState(
+    JSON.parse(JSON.stringify([...boardDefault]))
+  );
   const [currAttempt, setCurrAttempt] = useState({ attempt: 0, letterPos: 0 });
   const [wordSet, setWordSet] = useState(new Set());
   const [disabledLetters, setDisabledLetter] = useState([]);
@@ -17,6 +19,18 @@ function App() {
     guessedWord: false,
   });
 
+  const restart = () => {
+    setBoard(JSON.parse(JSON.stringify([...boardDefault])));
+    setGameOver({
+      gameOver: false,
+      guessedWord: false,
+    });
+    setDisabledLetter([]);
+    setCurrAttempt({ attempt: 0, letterPos: 0 });
+    generateWordSet().then((words) => {
+      setCorrectWord(words.todaysWord);
+    });
+  };
   useEffect(() => {
     generateWordSet().then((words) => {
       setWordSet(words.wordSet);
@@ -79,6 +93,7 @@ function App() {
           disabledLetters,
           setGameOver,
           gameOver,
+          restart,
         }}
       >
         <div className="game">
